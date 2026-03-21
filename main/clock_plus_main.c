@@ -36,21 +36,35 @@ void app_main(void) {
     bme680_set_filter_size(&sensor, BME680_IIR_SIZE_3);
 
     while (1) {
-        // Trigger measurement and wait for the duration
         uint32_t duration;
-        bme680_get_measurement_duration(&sensor, &duration);
+    // 1. Calculate how long the sensor needs (based on oversampling settings)
+    bme680_get_measurement_duration(&sensor, &duration);
 
-        if (bme680_force_measurement(&sensor) == ESP_OK) {
-            // Wait for the sensor to finish its "cook time"
-            vTaskDelay(pdMS_TO_TICKS(duration / 1000));
+    // 2. Start the measurement
+    esp_err_t ret = bme680_force_measurement(&sensor);
+    
+    if (ret == ESP_OK) {
+        // 3. IMPORTANT: Wait for the duration + a small safety buffer (1s)
+        // duration is in microseconds, so we divide by 1000
+        vTaskDelay(pdMS_TO_TICKS((duration / 1000) + 1000));
 
-            // Get the results in SI Units (Celsius, %, hPa)
+        // 4. Check if data is actually ready before reading
+        bool busy;
+        bme680_is_measuring(&sensor, &busy);
+        
+        if (!busy) {
             if (bme680_get_results_float(&sensor, &values) == ESP_OK) {
-                ESP_LOGI(TAG, "\n\nTemperature: %.2f °C", values.temperature);
-                ESP_LOGI(TAG, "Humidity:    %.2f %%", values.humidity);
-                ESP_LOGI(TAG, "Pressure:    %.2f hPa", values.pressure);
+                ESP_LOGI(TAG, "Temp: %.2f °C | Hum: %.2f %% | Pres: %.2f hPa | Gas: %.2f Ohm", 
+                         values.temperature, values.humidity, values.pressure, values.gas_resistance);
             }
+        } else {
+            ESP_LOGW(TAG, "Sensor still busy...");
         }
-        vTaskDelay(pdMS_TO_TICKS(5000)); // Read every 5 seconds
+    } else if (ret == ESP_ERR_INVALID_STATE) {
+        ESP_LOGE(TAG, "Sensor busy error. Try increasing the delay.");
+    }
+
+    // 5. Wait 30 seconds before the next loop
+    vTaskDelay(pdMS_TO_TICKS(15000));
     }
 }
