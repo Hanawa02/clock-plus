@@ -7,7 +7,9 @@ idf.py set-target esp32h2
 idf.py build
 idf.py -p /dev/ttyACM0 flash monitor
 
+idf.py add-dependency esp-idf-lib/bme680
 ```
+
 
 
 # Throubleshooting
