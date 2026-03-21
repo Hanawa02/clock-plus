@@ -7,6 +7,8 @@ idf.py set-target esp32h2
 idf.py build
 idf.py -p /dev/ttyACM0 flash monitor
 
+
+# dependencies
 idf.py add-dependency esp-idf-lib/bme680
 ```
 
@@ -65,4 +67,10 @@ If your code has a "boot loop" (it crashes and restarts infinitely), the compute
 # References
 
 https://github.com/UncleRus/esp-idf-lib/blob/master/docs/source/groups/bme680.rst
+https://github.com/waveshareteam/e-Paper/tree/master/E-paper_Separate_Program/4in2_e-Paper_G/ESP32
+https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_Manual#ESP32.2F8266
+https://www.waveshare.com/wiki/Bme680?srsltid=AfmBOoqPPj9ZYPLAmlMP35z1a8SaZOOrNOYNApiYSeoCBmXSgaey9XNJ
+https://www.waveshare.com/w/upload/4/4f/ESP32-H2-Zero-details-inter.jpg
 
+
+https://github.com/waveshareteam/e-Paper/trunk/E-paper_Separate_Program/4in2_e-Paper_G/ESP32
