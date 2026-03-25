@@ -46,12 +46,12 @@
 /**
  * GPIO config
 **/
-#define EPD_SCK_PIN  13
-#define EPD_MOSI_PIN 14
-#define EPD_CS_PIN   15
-#define EPD_RST_PIN  26
-#define EPD_DC_PIN   27
-#define EPD_BUSY_PIN 25
+#define EPD_SCK_PIN  4
+#define EPD_MOSI_PIN 5
+#define EPD_CS_PIN   3
+#define EPD_RST_PIN  1
+#define EPD_DC_PIN   2
+#define EPD_BUSY_PIN 0
 
 /**
  * Enable it or not according to the actual hardware used, and the corresponding pin
