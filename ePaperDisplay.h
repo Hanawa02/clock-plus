@@ -4,6 +4,7 @@
 
 #include <Fonts/FreeSans9pt7b.h>      // font 9px
 #include <Fonts/FreeSans12pt7b.h>     // font 12px
+#include <Fonts/FreeSans24pt7b.h>     // font 12px
 #include <Fonts/FreeMonoBold9pt7b.h>  // Default from examples
 #include <Fonts/FreeSansBold24pt7b.h>
 
@@ -42,10 +43,8 @@ void setupDisplay() {
   SPI.begin(EPD_SCK, -1, EPD_MOSI, EPD_CS);
 
   display.init(115200, false, 20, false);
-  display.setRotation(LANDSCAPE);
- display.fillScreen(GxEPD_WHITE); // set the background to white (fill the buffer with value for white)
-
-
+  // display.setRotation(LANDSCAPE);
+  display.fillScreen(GxEPD_WHITE); // set the background to white (fill the buffer with value for white)
 }
 
 
@@ -84,8 +83,8 @@ void updateTime(char time[]) {
   display.firstPage();  // Even with partial, GxEPD2 uses the loop for safety
 
   display.setTextColor(GxEPD_BLACK);
-  display.setFont(&FreeSans12pt7b);
-  display.setTextSize(5);
+  display.setFont(&FreeSans24pt7b);
+  display.setTextSize(3);
 
   // Adafruit_GFX has a handy method getTextBounds() to determine the boundary box for a text for the actual font
   int16_t tbx = x, tby = y;

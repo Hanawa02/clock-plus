@@ -16,7 +16,7 @@ void setup() {
  
   setupDisplay();
   // upateDisplay();
-  // updateTime("23:59");
+  updateTime("23:59");
 }
 
 
@@ -24,8 +24,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  updateTime("23:59");
-  delay(60000);
+  // updateTime("23:59");
+  // delay(60000);
 // 
 }
 
