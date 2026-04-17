@@ -9,13 +9,13 @@
 
 
 /* Zigbee contact sensor configuration */
-#define SOMETHING_ENDPOINT_NUMBER 1
+#define CLOCK_PLUS_ENDPOINT_NUMBER 1
 
 // struct tm timeinfo;
 // struct tm *localTime;
 // int32_t timezone;
 
-ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus(SOMETHING_ENDPOINT_NUMBER);
+ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus(CLOCK_PLUS_ENDPOINT_NUMBER);
 
 uint8_t button = BOOT_PIN;
 
