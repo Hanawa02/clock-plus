@@ -100,12 +100,16 @@ void loop() {
   
   delay(300);  
 
-  zbClockPlus.setTemperature(23.2);
-  // zbClockPlus.setHumidity(44.1);
-  delay(200);
-  zbClockPlus.report();
+    esp_zb_lock_acquire(portMAX_DELAY);
+      
+      zbClockPlus.setTemperature(24.2);
+    // zbClockPlus.setHumidity(44.1);
+      zbClockPlus.report();
+      
 
-  Serial.println("Setup Temp. Initial Temperature Data sent!");
+    Serial.println("Setup Temp. Initial Temperature Data sent!");
+    
+    esp_zb_lock_release();
 
   struct tm timeinfo = zbClockPlus.getTime();
   if (timeinfo.tm_year > 0) { // Year 0 means it's not synced yet
