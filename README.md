@@ -73,3 +73,5 @@ Just as a side note, I also tried using esp-idf sdk on VS Code, but found it way
 	- If everything went well you should see the logs similar to those bellow on the **Output** tab and the your ESP32H2 rgb lights should be changing colors 🎉
 
 ## Step 3 - Basic connection to Zigbee
+
+![First Successful connection with time fetching](screenshot/arduino-zigbee-connection-successful.png)

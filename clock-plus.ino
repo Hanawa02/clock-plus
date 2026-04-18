@@ -22,6 +22,7 @@ uint8_t button = BOOT_PIN;
 // /* Preferences for storing ENROLLED flag to persist across reboots */
 Preferences preferences;
 
+// uint8_t reset = 0;
 
 void setup() {
 
@@ -66,7 +67,7 @@ void setup() {
   Serial.println("Setup 4. Connecting to Zigbee network");
 
   if (Zigbee.connected()) {
-    blink_green();
+    blink_blue();
     Serial.println("Setup 4a. Connected to Zigbee successfully!");
 
   }
@@ -82,6 +83,9 @@ void setup() {
 void loop() {
   // Checking button for factory reset
   if (digitalRead(button) == LOW) {  // Push button pressed
+
+    Serial.println("Pressed?");
+
     // Key debounce handling
     delay(100);
     int startTime = millis();
@@ -97,29 +101,29 @@ void loop() {
       }
     }
   }
-  
-  delay(300);  
 
-    esp_zb_lock_acquire(portMAX_DELAY);
-      
-      zbClockPlus.setTemperature(24.2);
-    // zbClockPlus.setHumidity(44.1);
-      zbClockPlus.report();
-      
+  delay(300);
 
-    Serial.println("Setup Temp. Initial Temperature Data sent!");
-    
-    esp_zb_lock_release();
 
-    if (Zigbee.connected()) {
+  esp_zb_lock_acquire(portMAX_DELAY);
+  zbClockPlus.setTemperature(28.4);
+  zbClockPlus.setHumidity(42);
+  zbClockPlus.report();
+
+  Serial.println("Setup Temp. Initial Temperature Data sent!");
+
+  esp_zb_lock_release();
+
+  if (Zigbee.connected()) {
     struct tm timeinfo = zbClockPlus.getTime();
-    if (timeinfo.tm_year > 0) { // Year 0 means it's not synced yet
+    if (timeinfo.tm_year > 0) {  // Year 0 means it's not synced yet
       Serial.printf("Time: %02d:%02d:%02d\n", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
     } else {
       Serial.println("Waiting for Time Sync from Hub...");
     }
-    } else {
-      Serial.println("Oops, disconnected");
-    }
-  delay(10000); // Wait 10 seconds before next update
+  } else {
+    Serial.println("Oops, disconnected");
+  }
+
+  delay(10000);  // Wait 10 seconds before next update
 }

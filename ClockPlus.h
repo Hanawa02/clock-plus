@@ -18,12 +18,14 @@ public:
   ZigbeeClockPlus(uint8_t endpoint) : ZigbeeTempSensor(endpoint) {
     // 1. Set the Device ID FIRST. 
     // This tells the base class what kind of "template" to prepare.
-    setManufacturerAndModel("Hanawa", "ClockPlus");    
+    setManufacturerAndModel("Hanawa", "ClockPlus"); 
+    setVersion(8);
+    setHardwareVersion(2); 
   }
 
   void initialize() {    
-    // addHumiditySensor(0, 100, 1, 0.0);
     addTimeCluster();     
+    addHumiditySensor();    
   }
 };
 #endif  // CONFIG_ZB_ENABLED
