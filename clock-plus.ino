@@ -106,6 +106,7 @@ void loop() {
   blink_green();
   delay(300);
 
+  zbClockPlus.updateTime();
 
   esp_zb_lock_acquire(portMAX_DELAY);
   zbClockPlus.setTemperature(28.4);
@@ -116,16 +117,5 @@ void loop() {
 
   esp_zb_lock_release();
 
-  if (Zigbee.connected()) {
-    struct tm timeinfo = zbClockPlus.getTime();
-    if (timeinfo.tm_year > 0) {  // Year 0 means it's not synced yet
-      Serial.printf("Time: %02d:%02d:%02d\n", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-    } else {
-      Serial.println("Waiting for Time Sync from Hub...");
-    }
-  } else {
-    Serial.println("Oops, disconnected");
-  }
-
-  delay(10000);  // Wait 10 seconds before next update
+  delay(30000);  // Wait 30 seconds before next update
 }
