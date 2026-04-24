@@ -9,7 +9,7 @@
 
 
 /* Zigbee contact sensor configuration */
-#define CLOCK_PLUS_ENDPOINT_NUMBER 1
+#define CLOCK_PLUS_ENDPOINT_NUMBER 2
 
 // struct tm timeinfo;
 // struct tm *localTime;
@@ -19,10 +19,8 @@ ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus(CLOCK_PLUS_ENDPOINT_NUMBER);
 
 uint8_t button = BOOT_PIN;
 
-// /* Preferences for storing ENROLLED flag to persist across reboots */
+/* Preferences for storing ENROLLED flag to persist across reboots */
 Preferences preferences;
-
-// uint8_t reset = 0;
 
 void setup() {
 
@@ -62,6 +60,7 @@ void setup() {
   } else {
     blink_green();
     Serial.println("Setup 3b. Zigbee started successfully!");
+    delay(500);
   }
 
   Serial.println("Setup 4. Connecting to Zigbee network");
@@ -77,6 +76,8 @@ void setup() {
     Serial.println("Setup 4b. Waiting for connection to Zigbee network");
     delay(500);    
   }
+
+  delay(3000);
 
 }
 
@@ -102,15 +103,16 @@ void loop() {
     }
   }
 
+  blink_green();
   delay(300);
 
 
   esp_zb_lock_acquire(portMAX_DELAY);
   zbClockPlus.setTemperature(28.4);
-  zbClockPlus.setHumidity(42);
+  zbClockPlus.setHumidity(44.0);
   zbClockPlus.report();
 
-  Serial.println("Setup Temp. Initial Temperature Data sent!");
+  Serial.println("Loop - Data Sent");
 
   esp_zb_lock_release();
 

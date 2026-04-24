@@ -8,10 +8,6 @@
 #include "ZigbeeEP.h"
 #include "ha/esp_zigbee_ha_standard.h"
 
-// struct tm timeinfo;
-// struct tm *localTime;
-// int32_t timezone;
-
 
 class ZigbeeClockPlus : public ZigbeeTempSensor {
 public:
@@ -19,8 +15,8 @@ public:
     // 1. Set the Device ID FIRST. 
     // This tells the base class what kind of "template" to prepare.
     setManufacturerAndModel("Hanawa", "ClockPlus"); 
-    setVersion(8);
-    setHardwareVersion(2); 
+    setVersion(1);
+    setHardwareVersion(1); 
   }
 
   void initialize() {    
