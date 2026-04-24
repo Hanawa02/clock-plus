@@ -8,11 +8,7 @@
 #include <Preferences.h>
 
 
-/* Zigbee contact sensor configuration */
-#define CLOCK_PLUS_ENDPOINT_NUMBER 2
-
-
-ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus(CLOCK_PLUS_ENDPOINT_NUMBER);
+ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus();
 
 uint8_t button = BOOT_PIN;
 
@@ -24,10 +20,10 @@ void setup() {
   // This initiates a connection between the ESP32 and the computer - from Gemini:
   // > The command initializes the UART (Universal Asynchronous Receiver-Transmitter) hardware inside the ESP32. It sets the Baud Rate, which is the speed at which data is transmitted over the serial connection.
   // > The number 115200 represents the speed in bits per second (bps). For the ESP32 to communicate successfully, both the board and the Serial Monitor in your Arduino IDE must be set to the same baud rate.
-  Serial.begin(115200);  
+  Serial.begin(115200);
 
   while (!Serial) {
-    delay(10); // Wait for the serial port to connect
+    delay(10);  // Wait for the serial port to connect
   }
 
   blink_white();
@@ -38,14 +34,15 @@ void setup() {
   bool enrolled = preferences.getBool("ENROLLED");  // Get ENROLLED flag from preferences
   preferences.end();
 
-  // Init boot button 
+  // Init boot button
   pinMode(button, INPUT_PULLUP);
 
   Serial.println("Setup 2. Initializing zbClockPlus");
   zbClockPlus.initialize();
 
   // Add endpoint to Zigbee Core
-  Zigbee.addEndpoint(&zbClockPlus);
+  Zigbee.addEndpoint(&zbClockPlus.sensorEP);
+  Zigbee.addEndpoint(&zbClockPlus.timeDisplayModeEP);
 
   Serial.println("Setup 3. Starting Zigbee");
 
@@ -65,17 +62,15 @@ void setup() {
   if (Zigbee.connected()) {
     blink_blue();
     Serial.println("Setup 4a. Connected to Zigbee successfully!");
-
   }
 
   while (!Zigbee.connected()) {
     blink_yellow();
     Serial.println("Setup 4b. Waiting for connection to Zigbee network");
-    delay(500);    
+    delay(500);
   }
 
   delay(3000);
-
 }
 
 void loop() {
@@ -100,15 +95,17 @@ void loop() {
     }
   }
 
+
   blink_green();
   delay(300);
 
   zbClockPlus.updateTime();
 
   esp_zb_lock_acquire(portMAX_DELAY);
-  zbClockPlus.setTemperature(28.4);
-  zbClockPlus.setHumidity(44.0);
-  zbClockPlus.report();
+
+  zbClockPlus.setTemperature(28.7);
+  zbClockPlus.setHumidity(45.8);
+  zbClockPlus.reportSensorData();
 
   Serial.println("Loop - Data Sent");
 
