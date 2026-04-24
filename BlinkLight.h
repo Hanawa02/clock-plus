@@ -1,7 +1,7 @@
 
 
 #define LED_BRIGHTNESS 16 // make it faint to save energy
-#define BLINK_TIME_MS 800
+#define BLINK_TIME_MS 300
 
 void turn_led_light_off() {
     digitalWrite(RGB_BUILTIN, LOW); // turns off the LED
