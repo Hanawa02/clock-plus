@@ -11,9 +11,6 @@
 /* Zigbee contact sensor configuration */
 #define CLOCK_PLUS_ENDPOINT_NUMBER 2
 
-// struct tm timeinfo;
-// struct tm *localTime;
-// int32_t timezone;
 
 ZigbeeClockPlus zbClockPlus = ZigbeeClockPlus(CLOCK_PLUS_ENDPOINT_NUMBER);
 
