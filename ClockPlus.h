@@ -45,7 +45,7 @@ public:
 
     timeDisplayModeEP.addBinaryOutput();
     timeDisplayModeEP.setBinaryOutputApplication(BINARY_OUTPUT_APPLICATION_TYPE_HVAC_OTHER);
-    timeDisplayModeEP.setBinaryOutputDescription("Display 24h format");
+    timeDisplayModeEP.setBinaryOutputDescription("Use 12h time display format");
 
     timeDisplayModeEP.onBinaryOutputChange(onTimeDisplayModeChangeStatic);    
   }
@@ -54,7 +54,7 @@ public:
     int hour = lt->tm_hour;
     const char *ampm = "";
 
-    if (!time_display_24_format) {
+    if (use_12h_display_format) {
       ampm = (hour >= 12) ? " PM" : " AM";
       hour = hour % 12;
       if (hour == 0) hour = 12;  // Handle midnight/noon
@@ -65,14 +65,6 @@ public:
 
   void updateTime() {
     if (Zigbee.connected()) {
-      if (!initial_values_sync_done) {
-        Serial.print("Bool? ");
-        timeDisplayModeEP.setBinaryOutput(time_display_24_format);
-        initial_values_sync_done = true;
-        Serial.println(timeDisplayModeEP.getBinaryOutput());
-      }
-
-
       struct tm fetched_timeinfo = sensorEP.getTime();
       int32_t fetched_timezone = sensorEP.getTimezone();
 
@@ -121,21 +113,20 @@ public:
     sensorEP.report();
   }
 
-static void onTimeDisplayModeChangeStatic(bool use_24_mode) {
+static void onTimeDisplayModeChangeStatic(bool use_12h_mode) {
     if (instance != nullptr) {
-      instance->onTimeDisplayModeChange(use_24_mode);
+      instance->onTimeDisplayModeChange(use_12h_mode);
     }
   }
 
-  void onTimeDisplayModeChange(bool use_24_mode) {
+  void onTimeDisplayModeChange(bool use_12h_mode) {
     // print the state
-    Serial.printf("Received Time Display format change, use 24 hours format: %u\r\n", use_24_mode);
-    time_display_24_format = use_24_mode;
+    Serial.printf("Received Time Display format change, use 12 hours format: %u\r\n", use_12h_mode);
+    use_12h_display_format = use_12h_mode;
   }
 
 private:
-  bool initial_values_sync_done = false;
-  bool time_display_24_format = true;
+  bool use_12h_display_format = false;
 };
 
 // I don't really like this, but seems to be needed because of C++
